@@ -20,6 +20,7 @@ const toggleSelection = ({ element, selectedElement }) => {
 
 export default ({ name, onClick }) => {
   const div = document.createElement("div");
+  div.classList.add("name");
   const text = document.createTextNode(name);
   div.appendChild(text);
 
