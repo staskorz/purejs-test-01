@@ -1,11 +1,10 @@
 import "./index.css";
 import registerServiceWorker from "./registerServiceWorker";
+import contacts from "./data/contacts";
+import createGroupElement from "./element-creators/group";
 
 const rootElement = document.getElementById("root");
 
-const p = document.createElement("p");
-const text = document.createTextNode("Hello from PureJS!");
-p.appendChild(text);
-rootElement.appendChild(p);
+rootElement.appendChild(createGroupElement({ name: null, contacts }));
 
 registerServiceWorker();
