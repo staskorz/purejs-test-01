@@ -1,3 +1,7 @@
 .group-children {
   margin-left: 10px;
 }
+
+.selected {
+  background-color: #add8e6;
+}
