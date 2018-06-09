@@ -1,26 +1,14 @@
 import createNameElement from "./name";
 import createContactElement from "./contact";
 
-const createGroupElement = ({ name, contacts }) => {
-  const div = document.createElement("div");
+const GROUP_CHILDREN_CLASS = "group-children";
 
-  // root item has no name
-  if (name) {
-    div.appendChild(
-      createNameElement({
-        name
-      })
-    );
-  }
-
+const addGroupChildren = ({ element, contacts, isRootItem }) => {
   const groupChildren = document.createElement("div");
 
-  // root item has no name
-  if (name) {
-    groupChildren.className = "group-children";
+  if (!isRootItem) {
+    groupChildren.className = GROUP_CHILDREN_CLASS;
   }
-
-  div.appendChild(groupChildren);
 
   contacts.forEach(({ name, type, contacts }) => {
     if (type === "Group") {
@@ -38,6 +26,45 @@ const createGroupElement = ({ name, contacts }) => {
       );
     }
   });
+
+  element.appendChild(groupChildren);
+};
+
+const removeGroupChildren = ({ element }) => {
+  [...element.childNodes]
+    .filter(childNode => childNode.className === GROUP_CHILDREN_CLASS)
+    .forEach(childNode => {
+      childNode.remove();
+    });
+};
+
+const createGroupElement = ({ name, contacts }) => {
+  const div = document.createElement("div");
+
+  const isRootItem = !name;
+
+  if (isRootItem) {
+    addGroupChildren({ element: div, contacts, isRootItem });
+  } else {
+    div.appendChild(
+      createNameElement({
+        name,
+        onClick: () => {
+          if (div.dataset.expanded) {
+            delete div.dataset.expanded;
+            removeGroupChildren({ element: div });
+          } else {
+            div.dataset.expanded = true;
+            addGroupChildren({
+              element: div,
+              contacts,
+              isRootItem
+            });
+          }
+        }
+      })
+    );
+  }
 
   return div;
 };
